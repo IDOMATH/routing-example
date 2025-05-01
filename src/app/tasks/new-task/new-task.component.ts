@@ -28,6 +28,6 @@ export class NewTaskComponent {
       },
       this.userId()
     );
-    this.router.navigate(["../"]);
+    this.router.navigate(["../"], { replaceUrl: true });
   }
 }
