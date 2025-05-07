@@ -14,10 +14,19 @@ import { RouterLink } from "@angular/router";
 })
 export class TasksComponent {
   userId = input.required<string>();
-  order = input<"asc" | "desc">();
+  order = input<"asc" | "desc">("asc");
   private tasksService = inject(TasksService);
 
   userTasks = computed(() =>
-    this.tasksService.allTasks().filter((task) => task.userId === this.userId())
+    this.tasksService
+      .allTasks()
+      .filter((task) => task.userId === this.userId())
+      .sort((a, b) => {
+        if (this.order() === "desc") {
+          return a.id > b.id ? -1 : 1;
+        } else {
+          return a.id > b.id ? 1 : -1;
+        }
+      })
   );
 }
