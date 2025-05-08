@@ -1,15 +1,10 @@
 import { CanMatchFn, RedirectCommand, Router, Routes } from "@angular/router";
-import { TasksComponent } from "./tasks/tasks.component";
 import { NoTaskComponent } from "./tasks/no-task/no-task.component";
 import {
   resolveTitle,
   resolveUserName,
   UserTasksComponent,
 } from "./users/user-tasks/user-tasks.component";
-import {
-  canLeaveEditPage,
-  NewTaskComponent,
-} from "./tasks/new-task/new-task.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { inject } from "@angular/core";
 
@@ -27,15 +22,8 @@ export const routes: Routes = [
   {
     path: "users/:userId",
     component: UserTasksComponent,
-    children: [
-      { path: "", redirectTo: "tasks", pathMatch: "prefix" },
-      { path: "tasks", component: TasksComponent },
-      {
-        path: "tasks/new",
-        component: NewTaskComponent,
-        canDeactivate: [canLeaveEditPage],
-      },
-    ],
+    loadChildren: () =>
+      import("./users/users.routes").then((mod) => mod.routes),
     data: { message: "Hello!" },
     resolve: {
       userName: resolveUserName,
